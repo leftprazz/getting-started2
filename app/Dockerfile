@@ -1,5 +1,6 @@
-FROM node:18-alpine
+# syntax=docker/dockerfile:1
 
+FROM node:18-alpine
 WORKDIR /app
 
 # Install nodemon globally
