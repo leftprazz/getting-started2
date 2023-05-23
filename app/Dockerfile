@@ -11,10 +11,10 @@ RUN yarn global add nodemon
 COPY package.json yarn.lock ./
 
 # Install all dependencies
-RUN yarn install --production
+RUN yarn install
 
 # Copy the rest of the application code
 COPY . .
 
 # Set the command to run nodemon
-CMD ["nodemon", "./src/index.js"]
+CMD ["node", "./src/index.js"]
