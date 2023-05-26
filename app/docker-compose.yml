@@ -45,44 +45,63 @@
   
 
 
+# version: '3'
+
+# services:
+#   app:
+#     image: node:18-alpine
+#     command: sh -c "sleep 20 && yarn install && yarn run dev"
+#     ports:
+#       - 80:3000
+#     working_dir: /app
+#     volumes:
+#       - ./:/app
+#     environment:
+#       - MYSQL_HOST=mysql # nama service mysql
+#       - MYSQL_USER=root
+#       - MYSQL_PASSWORD=secret
+#       - MYSQL_DB=todos
+#     depends_on:
+#       - mysql
+#     deploy:
+#       replicas: 3
+#       restart_policy:
+#         condition: on-failure
+#       update_config:
+#         delay: 20s
+
+#   mysql:
+#     image: mysql:8.0
+#     ports:
+#       - 3306:3306
+#     environment:
+#       - MYSQL_ROOT_PASSWORD=secret
+#       - MYSQL_DATABASE=todos
+#     deploy:
+#       replicas: 3
+#       restart_policy:
+#         condition: on-failure
+#     volumes:
+#       - app_todo-mysql-data:/var/lib/mysql
+
+# volumes:
+#   app_todo-mysql-data:
+
+
 version: '3'
 
 services:
   app:
     image: node:18-alpine
     command: sh -c "sleep 20 && yarn install && yarn run dev"
-    ports:
-      - 80:3000
+    network_mode: "host"
     working_dir: /app
     volumes:
       - ./:/app
     environment:
-      - MYSQL_HOST=mysql # nama service mysql
+      - MYSQL_HOST=localhost   # Ganti <host_ip> dengan alamat IP host
+      - MYSQL_PORT=3306
       - MYSQL_USER=root
-      - MYSQL_PASSWORD=secret
+      - MYSQL_PASSWORD=password
       - MYSQL_DB=todos
-    depends_on:
-      - mysql
-    deploy:
-      replicas: 3
-      restart_policy:
-        condition: on-failure
-      update_config:
-        delay: 20s
 
-  mysql:
-    image: mysql:8.0
-    ports:
-      - 3306:3306
-    environment:
-      - MYSQL_ROOT_PASSWORD=secret
-      - MYSQL_DATABASE=todos
-    deploy:
-      replicas: 1
-      restart_policy:
-        condition: on-failure
-    volumes:
-      - app_todo-mysql-data:/var/lib/mysql
-
-volumes:
-  app_todo-mysql-data:
