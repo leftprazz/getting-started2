@@ -48,41 +48,37 @@
 version: '3'
 
 services:
-  app:
+  app2:
     image: node:18-alpine
     command: sh -c "sleep 20 && yarn install && yarn run dev"
     ports:
-      - 80:3000
-    working_dir: /app
+      - 9002:9002
+    working_dir: /app2
     volumes:
-      - ./:/app
+      - ./:/app2
     environment:
-      - MYSQL_HOST=mysql # nama service mysql
+      - MYSQL_HOST=mysql2
       - MYSQL_USER=root
       - MYSQL_PASSWORD=secret
       - MYSQL_DB=todos
     depends_on:
-      - mysql
-    deploy:
-      replicas: 3
-      restart_policy:
-        condition: on-failure
-      update_config:
-        delay: 20s
+      - mysql2
+    networks:
+      - network2
 
-  mysql:
+  mysql2:
     image: mysql:8.0
     ports:
-      - 3306:3306
+      - 8002:8002
     environment:
       - MYSQL_ROOT_PASSWORD=secret
       - MYSQL_DATABASE=todos
-    deploy:
-      replicas: 1
-      restart_policy:
-        condition: on-failure
     volumes:
-      - app_todo-mysql-data:/var/lib/mysql
+      - app_todo2-mysql-data:/var/lib/mysql
+    networks:
+      - network2
 
 volumes:
-  app_todo-mysql-data:
+  app_todo2-mysql-data:
+networks:
+  network2:
